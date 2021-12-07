@@ -6,12 +6,7 @@ public class Location {
     Double longitude;
     Location[] neighbors;
     Double distance;
-
-    Location() {
-        this.name = "Evry";
-        this.latitude = 48.629828;
-        this.longitude = 2.4417819999999892;
-    }
+    Location from;
 
     Location(String name, Double longitude, Double latitude) {
         longitude = (Math.PI * longitude) / 180;
@@ -19,11 +14,11 @@ public class Location {
         this.name = name;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.distance = Math.random() * 100;
+        this.distance = Double.POSITIVE_INFINITY;
     }
 
     public void display() {
-        System.out.println("The city is : " + this.name + " and his location : " + this.longitude.toString() + " " + this.latitude.toString());
+        System.out.println("The city is : " + this.name + " and his location : " + this.longitude.toString() + " " + this.latitude.toString() + "\n And distance is " + this.distance);
     }
 
     double distanceTo(Location to) {
@@ -38,5 +33,41 @@ public class Location {
 
     double getDistance() {
         return distance;
+    }
+
+    // Mise en place de l'algo
+
+    void processNode(Location cur, LocationSet locSet) {
+        for (Location neighbor : cur.neighbors) {
+            double distance = cur.distance + cur.distanceTo(neighbor);
+            if (neighbor.distance == Double.POSITIVE_INFINITY) {
+                neighbor.distance = distance;
+                neighbor.from = cur;
+                locSet.add(neighbor);
+            }
+            if (neighbor.distance > distance) {
+                neighbor.distance = distance;
+                neighbor.from = cur;
+            }
+        }
+    }
+
+    void findPathTo(Location to) {
+        this.distance = (double) 0;
+        LocationSet locationSet = new LocationSet();
+        this.processNode(this, locationSet);
+        Location cur = locationSet.removeMin();
+        while (cur != to) {
+            processNode(cur, locationSet);
+            cur = locationSet.removeMin();
+        }
+
+        Location out = cur;
+        while (out != this) {
+            System.out.print("hop \n");
+            out.display();
+            out = out.from;
+        }
+        out.display();
     }
 }
