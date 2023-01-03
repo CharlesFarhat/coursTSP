@@ -37,7 +37,7 @@ def filtre_de_kalman_extended(F, Q, R, y_k, x_kalm_prec, P_kalm_prec):
     mu_prediction = F@x_kalm_prec
     # On va utiliser m_prediction comme meilleure approximation de X
     # à l'instant k !
-    P_prediction = Q + P_kalm_prec@F.T
+    P_prediction = Q + F@P_kalm_prec@F.T
 
     # Variables upadté pour l'update de l'EKF:
     y_k_new = y_k - g(mu_prediction) + \

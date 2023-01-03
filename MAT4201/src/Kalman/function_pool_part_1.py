@@ -22,7 +22,7 @@ def filtre_de_kalman(F, Q, H, R, y_k, x_kalm_prec, P_kalm_prec):
 
     # prédiction :
     m_prediction = F@x_kalm_prec
-    P_prediction = Q + P_kalm_prec@F.T
+    P_prediction = Q + F@P_kalm_prec@F.T
 
     # update
     K = P_prediction@H.T@np.linalg.inv(H@P_prediction@H.T + R)
