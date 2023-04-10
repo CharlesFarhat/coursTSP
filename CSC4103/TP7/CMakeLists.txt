@@ -3,4 +3,5 @@ project(TP7 C)
 
 set(CMAKE_C_STANDARD 17)
 
-add_executable(TP7 main.c)
+add_executable(TP7_intro intro.c)
+add_executable(TP7_mysh mysh.c)
